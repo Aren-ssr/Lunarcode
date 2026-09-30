@@ -1,0 +1,25 @@
+<section class="catalog-section" id="paths" aria-labelledby="catalog-heading">
+  <div class="section-heading heading-row" data-reveal>
+    <div><span class="section-kicker">{{ t.all_paths }}</span><h2 id="catalog-heading">{{ t.courses_title }}</h2><p>{{ t.courses_copy }}</p></div>
+    {% if current_user and current_user.is_owner %}<span class="owner-access-pill">✦ {{ t.owner_access }}</span>{% endif %}
+  </div>
+  {% for group in course_groups %}
+  <section class="catalog-group" aria-label="{{ group.title }}">
+    <div class="catalog-group-heading"><span class="eyebrow-dot"></span><h3>{{ group.title }}</h3><span>{{ "%02d"|format(loop.index) }}</span></div>
+    <div class="catalog-grid">
+      {% for course in group.courses %}
+      <article class="track-card track-{{ course.slug }} {% if course.available %}track-available{% endif %}" data-reveal>
+        <div class="track-card-top"><span class="track-glyph" aria-hidden="true">{{ course.mark }}</span><span class="track-status {% if course.available %}track-status-live{% endif %}"><i></i>{{ course.status }}</span></div>
+        <span class="track-group-label">{{ course.group_label }}</span>
+        <h4>{{ course.title }}</h4>
+        <p>{{ course.description }}</p>
+        <div class="track-card-bottom"><span class="track-price">{{ course.price }}</span>
+          {% if course.available %}<a class="track-open" href="{% if current_user %}{{ course.href }}{% else %}/register{% endif %}">{{ course.button }} <span aria-hidden="true">↗</span></a>
+          {% else %}<span class="track-open track-disabled" aria-disabled="true">{{ course.button }}</span>{% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</section>

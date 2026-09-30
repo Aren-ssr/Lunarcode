@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ t.dashboard_title }} — Lumincode{% endblock %}
+{% block content %}
+<section class="dashboard page-shell">
+  <div class="dashboard-heading">
+    <div><span class="section-kicker">{{ t.dashboard_space }}</span><h1>{{ t.welcome }}, <span class="text-gradient">{{ display_name }}</span></h1><p>{{ t.dashboard_title }}</p></div>
+    <div class="level-chip"><span class="level-star">✦</span><span><small>{{ t.level }}</small><b>{{ level }}</b></span></div>
+  </div>
+  <div class="dashboard-stats">
+    <article class="stat-card stat-trial">
+      <div class="stat-icon">◷</div><div><span class="stat-label">{{ t.trial_label }}</span>
+        {% if current_user.is_owner %}<strong class="owner-status">✦ {{ t.owner_access }}</strong>
+        {% elif current_user.subscription_status in ["active", "trialing"] %}<strong>{{ t.subscribed }}</strong>
+        {% elif remaining > 0 %}<strong data-countdown="{{ remaining }}">--:--</strong><span class="stat-sub">{{ t.trial_remaining }}</span>
+        {% else %}<strong>{{ t.trial_ended }}</strong>{% endif %}
+      </div>
+      <span class="stat-orbit" aria-hidden="true"></span>
+    </article>
+    <article class="stat-card"><div class="stat-icon">✦</div><div><span class="stat-label">{{ t.points }}</span><strong>{{ points }}</strong><span class="stat-sub">{{ t.level }} {{ level }}</span></div></article>
+    <article class="stat-card"><div class="stat-icon">◎</div><div><span class="stat-label">{{ t.completed }}</span><strong>{{ done|length }} / 10</strong><span class="stat-sub">{{ t.python_path }}</span></div></article>
+  </div>
+  {% if not has_access %}
+  <div class="inline-lock"><div><span class="section-kicker">{{ t.trial_ended }}</span><p>{{ t.locked_copy }}</p></div><a class="button button-primary" href="/subscribe">{{ t.subscribe }} <span aria-hidden="true">→</span></a></div>
+  {% endif %}
+  <div class="dashboard-section-heading"><div><span class="section-kicker">{{ t.current_path }}</span><h2>{{ t.continue_python }}</h2></div><a href="/courses/python" class="text-link">{{ t.lesson_open }} <span aria-hidden="true">↗</span></a></div>
+  <a class="dashboard-course-card" href="{% if has_access %}/courses/python{% else %}/subscribe{% endif %}">
+    <div class="dashboard-course-art" aria-hidden="true"><span class="dashboard-course-orbit"></span><span class="dashboard-py">Py</span></div>
+    <div class="dashboard-course-info"><span class="section-kicker">{{ t.python_path }}</span><h3>{{ t.python_title }}</h3><p>{{ t.lesson_count }}</p><div class="progress-track"><progress class="progress-meter" value="{{ done|length }}" max="10" aria-label="{{ t.completed }}"></progress></div><small>{{ done|length }} / 10 {{ t.completed }}</small></div>
+    <span class="course-card-arrow">↗</span>
+  </a>
+  <div class="level-progress"><span>{{ t.level }} {{ level }}</span><div class="progress-track"><progress class="progress-meter" value="{{ points % 200 }}" max="200" aria-label="{{ t.level_next }}"></progress></div><small>{{ (200 - (points % 200)) if points % 200 else 200 }} {{ t.level_next }}</small></div>
+  <div class="dashboard-catalog-wrap">{% include "_course_catalog.html" %}</div>
+</section>
+{% endblock %}

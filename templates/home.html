@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Lumincode — {{ t.hero_title }}{% endblock %}
+{% block content %}
+<section class="hero page-shell">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>{{ t.eyebrow }}</div>
+    <h1>{{ t.hero_title }}</h1>
+    <p class="hero-description">{{ t.hero_copy }}</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="{% if current_user %}/dashboard{% else %}/register{% endif %}">
+        <span>{{ t.hero_cta }}</span><span aria-hidden="true">↗</span>
+      </a>
+      <a class="text-link" href="#paths">{{ t.hero_secondary }} <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="hero-proof"><span class="proof-avatar">λ</span><span>CS <i>·</i> Python <i>·</i> Engineering</span></div>
+  </div>
+  <div class="hero-visual" aria-label="{{ t.lunar_visual_label }}">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+    <div class="moon"><div class="moon-crater crater-one"></div><div class="moon-crater crater-two"></div><div class="moon-crater crater-three"></div></div>
+    <div class="orbit-node node-one">01</div><div class="orbit-node node-two">λ</div>
+    <div class="float-card card-top"><span class="card-icon">⌘</span><span><small>{{ t.feature_cs }}</small><b>{{ t.hero_card_cs }}</b></span></div>
+    <div class="float-card card-bottom"><span class="card-icon code-icon">{} </span><span><small>{{ t.python_path }}</small><b>{{ t.hero_card_python }}</b></span></div>
+    <div class="moon-caption"><span>{{ t.orbit_label }}</span><b>{{ t.orbit_value }}</b></div>
+    <div class="visual-glow"></div>
+  </div>
+</section>
+
+<section class="section page-shell intro-section">
+  <div class="section-heading" data-reveal>
+    <span class="section-kicker">{{ t.map_section }}</span>
+    <h2>{{ t.what_title }}</h2>
+    <p>{{ t.what_copy }}</p>
+  </div>
+  <div class="feature-grid">
+    <article class="feature-card feature-cs" data-reveal>
+      <div class="feature-symbol symbol-grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <span class="card-index">01</span><h3>{{ t.feature_cs }}</h3><p>{{ t.feature_cs_copy }}</p>
+      <span class="feature-line"></span>
+    </article>
+    <article class="feature-card feature-code" data-reveal>
+      <div class="feature-symbol symbol-brackets" aria-hidden="true">&lt;/&gt;</div>
+      <span class="card-index">02</span><h3>{{ t.feature_code }}</h3><p>{{ t.feature_code_copy }}</p>
+      <span class="feature-line"></span>
+    </article>
+    <article class="feature-card feature-engineering" data-reveal>
+      <div class="feature-symbol symbol-orbit" aria-hidden="true"><span></span></div>
+      <span class="card-index">03</span><h3>{{ t.feature_engineering }}</h3><p>{{ t.feature_engineering_copy }}</p>
+      <span class="feature-line"></span>
+    </article>
+  </div>
+</section>
+
+{% include "_course_catalog.html" %}
+
+<section class="trial-banner page-shell" data-reveal>
+  <div class="trial-banner-orb" aria-hidden="true"></div>
+  <div><span class="section-kicker">{{ t.trial_section }}</span><h2>{{ t.trial_label }}</h2><p>{{ t.trial_minutes }}</p></div>
+  <a class="button button-primary" href="{% if current_user %}/dashboard{% else %}/register{% endif %}">{{ t.hero_cta }} <span aria-hidden="true">↗</span></a>
+</section>
+{% endblock %}

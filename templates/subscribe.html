@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ t.subscribe }} — Lumincode{% endblock %}
+{% block content %}
+<section class="subscribe-page page-shell">
+  <div class="subscribe-orbit" aria-hidden="true"><span></span><i></i></div>
+  <div class="subscribe-card">
+    <span class="section-kicker">{{ t.python_path }}</span>
+    <h1>{{ t.unlock_course }}</h1><p>{{ t.locked_copy }}</p>
+    <div class="price-line"><strong>{{ t.price }}</strong><span>{{ course_title }}</span></div>
+    <ul class="subscribe-benefits"><li>{{ t.benefit_python }}</li><li>{{ t.benefit_challenges }}</li><li>{{ t.benefit_projects }}</li><li>{{ t.benefit_progress }}</li></ul>
+    {% if error %}<div class="form-alert" role="alert">{{ t.billing_error }}</div>{% endif %}
+    {% if stripe_ready %}
+    <form action="/courses/python/checkout" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-primary button-wide" type="submit">{{ t.subscribe }} <span aria-hidden="true">↗</span></button></form>
+    {% else %}
+    <button class="button button-primary button-wide" type="button" disabled>{{ t.subscribe }}</button>
+    <p class="privacy-note">{{ t.billing_setup }}</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

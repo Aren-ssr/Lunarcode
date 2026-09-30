@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="{{ locale }}" data-theme="lunar">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090c18">
+  <meta name="description" content="Lumincode — computer science and programming, taught through clear lessons and hands-on challenges.">
+  <title>{% block title %}Lumincode{% endblock %}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="starfield" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="{{ t.home_label }}">
+      <span class="brand-mark" aria-hidden="true"><i></i></span>
+      <span>Lumin<span>code</span></span>
+    </a>
+    <button class="menu-toggle" aria-label="{{ t.menu_label }}" aria-expanded="false" data-menu-toggle><span></span><span></span></button>
+    <nav class="main-nav" data-nav>
+      <a href="/#paths">{{ t.nav_courses }}</a>
+      {% if current_user %}<a href="/dashboard">{{ t.nav_dashboard }}</a>{% endif %}
+      <div class="nav-actions">
+        <form class="language-form" action="/locale" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="next_path" value="{{ request.url.path }}">
+          <label class="sr-only" for="language-select">{{ t.language }}</label>
+          <select id="language-select" name="locale" aria-label="{{ t.language }}" data-language-select>
+            {% for code, label in languages.items() %}
+            <option value="{{ code }}" {% if code == locale %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </form>
+        {% if current_user %}
+          <form action="/logout" method="post" class="logout-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="button button-quiet" type="submit">{{ t.nav_logout }}</button>
+          </form>
+        {% else %}
+          <a class="button button-quiet" href="/login">{{ t.nav_login }}</a>
+          <a class="button button-small" href="/register">{{ t.nav_signup }}</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <a class="brand brand-footer" href="/"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Lumin<span>code</span></span></a>
+    <p>{{ t.footer_note }}</p>
+    <p class="footer-contact">{{ t.contact_placeholder }}</p>
+    <span class="footer-star" aria-hidden="true">✦</span>
+  </footer>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

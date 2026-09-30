@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }} — Lumincode{% endblock %}
+{% block content %}
+<section class="lesson-page page-shell" data-lesson-flow>
+  <div class="breadcrumbs"><a href="/courses/python">{{ t.back_course }}</a><span>/</span><span>{{ lesson.title }}</span></div>
+  <div class="lesson-heading">
+    <div><span class="section-kicker">{{ t.lesson_path_label }}</span><h1>{{ lesson.title }}</h1></div>
+    <div class="lesson-xp">✦ {{ lesson.points }} XP</div>
+  </div>
+  <div class="lesson-workspace">
+    <aside class="lesson-sidebar">
+      <span class="section-kicker">{{ t.python_path }}</span>
+      <div class="lesson-sidebar-list">
+        {% for item in lessons %}
+        <a class="lesson-sidebar-item {% if item.slug == lesson.slug %}active{% endif %} {% if item.slug in done %}done{% endif %}" href="/courses/python/{{ item.slug }}">
+          <span>{% if item.slug in done %}✓{% else %}{{ "%02d"|format(loop.index) }}{% endif %}</span><b>{{ item.title }}</b>
+        </a>
+        {% endfor %}
+      </div>
+    </aside>
+
+    <main class="lesson-flow" aria-label="{{ t.lesson_flow }}">
+      <div class="lesson-flow-progress">
+        <div><span class="section-kicker">{{ t.flow_progress }}</span><span class="flow-step-count" data-flow-count>01 / 07</span></div>
+        <progress class="flow-meter" max="100" value="0" data-flow-meter aria-label="{{ t.flow_progress }}"></progress>
+        <p>{{ t.scroll_hint }}</p>
+      </div>
+
+      <section class="lesson-block lesson-concept" id="concept" data-flow-step data-reveal>
+        <div class="lesson-block-heading"><span class="step-index">01</span><div><span class="section-kicker">{{ t.concept_label }}</span><h2>{{ lesson.title }}</h2></div><span class="step-symbol" aria-hidden="true">✧</span></div>
+        <p class="lesson-lead">{{ lesson.theory }}</p>
+        {% if lesson.guided_steps %}
+        <div class="guided-intro"><span class="eyebrow-dot"></span><p>{{ t.guided_intro }}</p></div>
+        <div class="guided-steps">
+          {% for step in lesson.guided_steps %}
+          <article class="guided-step" data-reveal>
+            <div class="guided-step-copy"><span class="guided-term">{{ step.term }}</span><p>{{ step.explanation }}</p></div>
+            <div class="guided-code"><code>{{ step.code }}</code><span aria-hidden="true">→</span><output>{{ step.result }}</output></div>
+          </article>
+          {% endfor %}
+        </div>
+        <p class="guided-finish">{{ t.guided_finish }}</p>
+        {% endif %}
+        <div class="concept-callout"><span>✦</span><p><strong>{{ t.hint }}:</strong> {{ lesson.hint }}</p></div>
+      </section>
+
+      <section class="lesson-block" id="code-lab" data-flow-step data-reveal>
+        <div class="lesson-block-heading"><span class="step-index">02</span><div><span class="section-kicker">{{ t.code_lab_label }}</span><h2>{{ t.code }}</h2></div><span class="step-symbol code-symbol" aria-hidden="true">&lt;/&gt;</span></div>
+        <p class="lesson-lead">{{ lesson.algorithm }}</p>
+        <div class="code-window"><div class="code-window-bar"><span class="window-dots"><i></i><i></i><i></i></span><small>main.py</small><button type="button" data-copy-code data-copy-label="{{ t.copy_code }}" data-copied-label="{{ t.copied }}">{{ t.copy_code }} ⧉</button></div><pre><code>{{ lesson.code }}</code></pre></div>
+      </section>
+
+      <section class="lesson-block" id="under-the-hood" data-flow-step data-reveal>
+        <div class="lesson-block-heading"><span class="step-index">03</span><div><span class="section-kicker">{{ t.system_label }}</span><h2>{{ t.algorithm }}</h2></div><span class="step-symbol" aria-hidden="true">◎</span></div>
+        <p class="lesson-lead">{{ lesson.algorithm }}</p>
+        <div class="algorithm-visual"><span class="algorithm-node">{{ t.input_label }}</span><span class="algorithm-arrow">→</span><span class="algorithm-node active">{{ t.process_label }}</span><span class="algorithm-arrow">→</span><span class="algorithm-node">{{ t.result_label }}</span></div>
+      </section>
+
+      <section class="lesson-block lesson-hint-block" id="navigation-hint" data-flow-step data-reveal>
+        <div class="lesson-block-heading"><span class="step-index">04</span><div><span class="section-kicker">{{ t.navigation_label }}</span><h2>{{ t.hint }}</h2></div><span class="step-symbol" aria-hidden="true">✦</span></div>
+        <p class="lesson-lead">{{ lesson.hint }}</p>
+        <div class="hint-orb" aria-hidden="true">✧</div>
+      </section>
+
+      <section class="lesson-block lesson-challenge" id="workshop" data-flow-step data-reveal>
+        <div class="lesson-block-heading"><span class="step-index">05</span><div><span class="section-kicker">{{ t.challenge_label }}</span><h2>{{ t.challenge_label }}</h2></div><span class="step-symbol" aria-hidden="true">⌘</span></div>
+        <p class="lesson-lead">{{ lesson.challenge }}</p>
+        <div class="engineering-practice"><span class="section-kicker">{{ t.professional_label }}</span><p>{{ t.challenge_quality }}</p></div>
+      </section>
+
+      <section class="lesson-block" id="video" data-flow-step data-reveal>
+        <div class="lesson-block-heading"><span class="step-index">06</span><div><span class="section-kicker">{{ t.watch_label }}</span><h2>{{ lesson.video.title }}</h2></div><span class="step-symbol play-symbol" aria-hidden="true">▶</span></div>
+        <div class="lesson-video-frame">
+          <iframe src="https://www.youtube-nocookie.com/embed/{{ lesson.video.id }}?start={{ lesson.video.start }}&amp;rel=0" title="{{ lesson.video.title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <div class="video-meta"><div><span class="section-kicker">{{ t.video_source }}</span><p>{{ lesson.video.source }}</p></div><a class="text-link" href="https://www.youtube.com/watch?v={{ lesson.video.id }}&amp;t={{ lesson.video.start }}s" target="_blank" rel="noopener noreferrer">{{ t.watch_youtube }} ↗</a></div>
+        <p class="video-language-note">{{ t.video_language_note }}</p>
+      </section>
+
+      <section class="lesson-block quiz-block" id="quiz" data-flow-step data-reveal>
+        <div class="lesson-block-heading"><span class="step-index">07</span><div><span class="section-kicker">{{ t.checkpoint_label }}</span><h2>{{ t.quiz }}</h2></div><span class="step-symbol" aria-hidden="true">✦</span></div>
+        {% if result == "correct" %}<div class="quiz-feedback success" role="status">{{ t.correct }}</div>{% elif result == "incorrect" %}<div class="quiz-feedback" role="status">{{ t.incorrect }}</div>{% endif %}
+        <form method="post" action="/courses/python/{{ lesson.slug }}/quiz" class="quiz-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          {% for check in lesson.quiz.checks %}
+          {% set check_number = loop.index %}
+          <fieldset class="quiz-check">
+            <legend><span class="quiz-check-index">0{{ loop.index }} / 02</span><span class="quiz-question">{{ check.question }}</span></legend>
+            {% if check.code %}<pre class="quiz-code"><code>{{ check.code }}</code></pre>{% endif %}
+            <div class="quiz-options">
+              {% for option in check.options %}
+              <label class="quiz-option"><input type="radio" name="{{ 'answer' if check_number == 1 else 'trace_answer' }}" value="{{ loop.index0 }}" required><span class="option-mark">{{ ["A", "B", "C"][loop.index0] }}</span><span>{{ option }}</span></label>
+              {% endfor %}
+            </div>
+          </fieldset>
+          {% endfor %}
+          <button class="button button-primary" type="submit">{{ t.submit_answer }} <span aria-hidden="true">→</span></button>
+        </form>
+        {% if lesson.slug in done %}<p class="already-complete">✓ {{ t.already_complete }}</p>{% endif %}
+      </section>
+      <div class="lesson-bottom"><a class="text-link" href="/courses/python">← {{ t.back_course }}</a><span>✦ {{ points }} {{ t.points }}</span></div>
+    </main>
+  </div>
+</section>
+{% endblock %}
