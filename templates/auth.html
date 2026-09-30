@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ t.create_account if mode == "register" else t.sign_in_title }} — Lumincode{% endblock %}
+{% block content %}
+<section class="auth-layout page-shell">
+  <div class="auth-side">
+    <span class="section-kicker">LUMINCODE / {{ t.your_orbit }}</span>
+    <h1>{{ t.create_account if mode == "register" else t.sign_in_title }}</h1>
+    <p>{{ t.trial_minutes }}</p>
+    <div class="auth-moon" aria-hidden="true"><span></span><i></i></div>
+    <div class="auth-side-note"><span class="eyebrow-dot"></span>{{ t.access_note }}</div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-card-heading"><span class="section-kicker">{{ t.account_access }}</span><h2>{{ t.create_account if mode == "register" else t.sign_in_title }}</h2></div>
+    {% if error %}
+    <div class="form-alert" role="alert">
+      {% if error == "email" %}{{ t.error_email }}
+      {% elif error == "password" %}{{ t.error_password }}
+      {% elif error == "exists" %}{{ t.error_exists }}
+      {% elif error == "csrf" %}{{ t.csrf_error }}
+      {% else %}{{ t.error_login }}{% endif %}
+    </div>
+    {% endif %}
+    <form method="post" action="/{{ mode }}" class="form-stack">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      {% if mode == "register" %}<input type="hidden" name="locale" value="{{ locale }}">{% else %}<input type="hidden" name="next" value="{{ next_path }}">{% endif %}
+      {% if mode == "register" %}<label for="display-name">{{ t.display_name }}</label><input id="display-name" name="display_name" type="text" autocomplete="name" maxlength="80">{% endif %}
+      <label for="email">{{ t.email }}</label>
+      <input id="email" name="email" type="email" value="{{ email }}" autocomplete="email" required maxlength="254">
+      <label for="password">{{ t.password }}</label>
+      <input id="password" name="password" type="password" autocomplete="{% if mode == 'register' %}new-password{% else %}current-password{% endif %}" minlength="8" maxlength="128" required>
+      {% if mode == "register" %}<p class="field-hint">{{ t.password_hint }}</p>{% endif %}
+      <button class="button button-primary button-wide" type="submit">{{ t.register if mode == "register" else t.login }} <span aria-hidden="true">↗</span></button>
+    </form>
+    <p class="auth-switch">{% if mode == "register" %}{{ t.have_account }} <a href="/login">{{ t.nav_login }}</a>{% else %}{{ t.need_account }} <a href="/register">{{ t.nav_signup }}</a>{% endif %}</p>
+    <p class="privacy-note">{{ t.account_note }}</p>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ t.python_path }} — Lumincode{% endblock %}
+{% block content %}
+<section class="course-page page-shell">
+  <div class="breadcrumbs"><a href="/dashboard">{{ t.nav_dashboard }}</a><span>/</span><span>{{ t.python_path }}</span></div>
+  <div class="course-hero">
+    <div class="course-hero-copy"><span class="section-kicker">{{ t.python_path }} / 10</span><h1>{{ t.python_title }}</h1><p>{{ t.python_copy }}</p><div class="course-meta"><span>◈ {{ done|length }} / 10 {{ t.completed }}</span><span>✦ {{ points }} {{ t.points }}</span></div></div>
+    <div class="course-hero-art" aria-hidden="true"><div class="course-planet"><span>Py</span></div><div class="course-ring ring-a"></div><div class="course-ring ring-b"></div><span class="course-art-star">✦</span></div>
+  </div>
+  <div class="lesson-list-heading"><div><span class="section-kicker">{{ t.curriculum }}</span><h2>{{ t.python_path }}</h2></div><div class="course-progress-label">{{ done|length }} / 10</div></div>
+  <div class="lesson-list">
+    {% for lesson in lessons %}
+    <a class="lesson-row {% if lesson.slug in done %}is-done{% endif %}" href="/courses/python/{{ lesson.slug }}">
+      <span class="lesson-number">{% if lesson.slug in done %}✓{% else %}{{ "%02d"|format(loop.index) }}{% endif %}</span>
+      <span class="lesson-row-copy"><small>{{ t.lesson }} {{ "%02d"|format(loop.index) }}</small><strong>{{ lesson.title }}</strong></span>
+      <span class="lesson-points">+{{ lesson.points }} XP</span><span class="lesson-row-arrow">↗</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
